@@ -1,0 +1,6 @@
+@MovieHub.API_HostAddress = http://localhost:5080
+
+GET {{MovieHub.API_HostAddress}}/openapi/v1.json
+Accept: application/json
+
+###

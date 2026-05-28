@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/MovieHub.API/MovieHub.API.csproj" />
+    <Project Path="src/MovieHub.Client/MovieHub.Client.csproj" />
+  </Folder>
+</Solution>
