@@ -6,14 +6,10 @@ using MovieHub.API.Models;
 
 namespace MovieHub.API.Services;
 
-public class GenreService
+public class GenreService (AppDbContext dbContext)
 {
-    private readonly AppDbContext _dbContext;
+    private readonly AppDbContext _dbContext = dbContext;
 
-    public GenreService(AppDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
 
     public Task<List<GenreResponse>> GetAllAsync(CancellationToken cancellationToken = default)
     {

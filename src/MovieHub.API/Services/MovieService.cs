@@ -7,14 +7,9 @@ using MovieHub.API.Models;
 
 namespace MovieHub.API.Services;
 
-public class MovieService
+public class MovieService (AppDbContext dbContext)
 {
-    private readonly AppDbContext _dbContext;
-
-    public MovieService(AppDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly AppDbContext _dbContext = dbContext;
 
     public async Task<List<MovieSummaryResponse>> GetAllAsync(
         MovieListQueryRequest query,

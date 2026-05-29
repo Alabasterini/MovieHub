@@ -12,16 +12,10 @@ using MovieHub.API.Exceptions;
 
 namespace MovieHub.API.Services;
 
-public class AuthService
+public class AuthService (AppDbContext dbContext, IOptions<JwtSettings> jwtSettings)
 {
-    private readonly AppDbContext _dbContext;
-    private readonly JwtSettings _jwtSettings;
-
-    public AuthService(AppDbContext dbContext, IOptions<JwtSettings> jwtSettings)
-    {
-        _dbContext = dbContext;
-        _jwtSettings = jwtSettings.Value;
-    }
+    private readonly AppDbContext _dbContext = dbContext;
+    private readonly JwtSettings _jwtSettings = jwtSettings.Value;
 
     public async Task<AuthResponse> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default)
     {
@@ -109,5 +103,4 @@ public class AuthService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }
-
 

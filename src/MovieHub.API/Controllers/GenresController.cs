@@ -8,14 +8,10 @@ namespace MovieHub.API.Controllers;
 
 [ApiController]
 [Route("api/genres")]
-public class GenresController : ControllerBase
+public class GenresController(GenreService genreService) : ControllerBase
 {
-    private readonly GenreService _genreService;
+    private readonly GenreService _genreService = genreService;
 
-    public GenresController(GenreService genreService)
-    {
-        _genreService = genreService;
-    }
 
     [HttpGet]
     [ProducesResponseType(typeof(List<GenreResponse>), StatusCodes.Status200OK)]

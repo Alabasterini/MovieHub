@@ -8,14 +8,10 @@ namespace MovieHub.API.Controllers;
 
 [ApiController]
 [Route("api/movies")]
-public class MoviesController : ControllerBase
+public class MoviesController (MovieService movieService) : ControllerBase
 {
-    private readonly MovieService _movieService;
+    private readonly MovieService _movieService = movieService;
 
-    public MoviesController(MovieService movieService)
-    {
-        _movieService = movieService;
-    }
 
     [HttpGet]
     [ProducesResponseType(typeof(List<MovieSummaryResponse>), StatusCodes.Status200OK)]

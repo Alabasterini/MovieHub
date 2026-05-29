@@ -1,19 +1,16 @@
 using Microsoft.AspNetCore.Mvc;
 using MovieHub.API.DTOs.Auth;
 using MovieHub.API.Services;
+using MovieHub.API.Exceptions;
 
 namespace MovieHub.API.Controllers;
 
 [ApiController]
 [Route("api/auth")]
-public class AuthController : ControllerBase
+public class AuthController(AuthService authService) : ControllerBase
 {
-    private readonly AuthService _authService;
+    private readonly AuthService _authService = authService;
 
-    public AuthController(AuthService authService)
-    {
-        _authService = authService;
-    }
 
     [HttpPost("register")]
     [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status201Created)]
