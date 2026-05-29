@@ -8,6 +8,7 @@ using MovieHub.API.Data;
 using MovieHub.API.DTOs.Auth;
 using MovieHub.API.Models;
 using MovieHub.API.Options;
+using MovieHub.API.Exceptions;
 
 namespace MovieHub.API.Services;
 
@@ -60,15 +61,17 @@ public class AuthService
         var user = await _dbContext.Users
             .FirstOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
 
-        if (user is null)
+
+        const string dummyHash = "$2a$12$1mavJkj7uSQ89BItMicdy.zYRsGhk8Ky7/Rytjv22SmnOgMY7pIeq";
+        string hashToVerify = user != null ? user.PasswordHash : dummyHash;
+
+        bool passwordIsValid = BCrypt.Net.BCrypt.Verify(request.Password, hashToVerify);
+
+        if (user is null || !passwordIsValid)
         {
-            throw new InvalidCredentialsException();
+            throw new InvalidCredentialsException("Invalid email or password.");
         }
 
-        if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
-        {
-            throw new InvalidCredentialsException();
-        }
 
         return CreateAuthResponse(user);
     }
@@ -88,9 +91,9 @@ public class AuthService
     {
         var claims = new[]
         {
-            new Claim("UserId", user.Id.ToString()),
-            new Claim("Username", user.Username),
-            new Claim("Role", user.Role.ToString())
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Name, user.Username),
+            new Claim(ClaimTypes.Role, user.Role.ToString())
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
@@ -107,13 +110,4 @@ public class AuthService
     }
 }
 
-public class DuplicateUserException : Exception
-{
-    public DuplicateUserException(string message) : base(message)
-    {
-    }
-}
 
-public class InvalidCredentialsException : Exception
-{
-}
