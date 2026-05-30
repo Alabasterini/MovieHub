@@ -67,14 +67,14 @@ public class RatingService(AppDbContext dbContext)
     {
         var rating = await _dbContext.Ratings
             .Include(r => r.User)
-            .FirstOrDefaultAsync(r => r.UserId == userId && r.Id == ratingId, cancellationToken);
+            .FirstOrDefaultAsync(r => r.Id == ratingId, cancellationToken);
 
         if (rating is null)
         {
             throw new NotFoundException("Rating not found.");
         }
 
-        if (rating.User.Id != userId)
+        if (rating.UserId != userId)
         {
             throw new ForbiddenException("You are not allowed to update this rating.");
         }
@@ -82,7 +82,6 @@ public class RatingService(AppDbContext dbContext)
         rating.Value = request.Value;
         rating.Comment = request.Comment;
 
-        _dbContext.Ratings.Update(rating);
         await _dbContext.SaveChangesAsync(cancellationToken);
         return MapToRatingResponse(rating);
     }

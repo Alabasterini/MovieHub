@@ -5,7 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using MovieHub.API.Data;
 using MovieHub.API.Options;
 using MovieHub.API.Services;
-
+using Scalar.AspNetCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -28,7 +28,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),
-            RoleClaimType = "Role",
             ClockSkew = TimeSpan.Zero
         };
     });
@@ -42,12 +41,14 @@ builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<GenreService>();
 builder.Services.AddScoped<MovieService>();
 builder.Services.AddScoped<RatingService>();
+builder.Services.AddScoped<DirectorService>();
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();

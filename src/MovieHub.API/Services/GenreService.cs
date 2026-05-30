@@ -16,11 +16,7 @@ public class GenreService (AppDbContext dbContext)
         return _dbContext.Genres
             .AsNoTracking()
             .OrderBy(g => g.Name)
-            .Select(g => new GenreResponse
-            {
-                Id = g.Id,
-                Name = g.Name
-            })
+            .Select(g => MapToResponse(g))
             .ToListAsync(cancellationToken);
     }
 
