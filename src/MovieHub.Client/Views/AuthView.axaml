@@ -1,0 +1,106 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MovieHub.Client.ViewModels"
+             x:Class="MovieHub.Client.Views.AuthView"
+             x:DataType="vm:AuthViewModel">
+
+    <Grid Background="#1C1C1E">
+        <Border Width="420"
+                Background="#2C2C2E"
+                CornerRadius="12"
+                Padding="40"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center">
+            <StackPanel Spacing="24">
+
+
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            Spacing="12">
+                    <Image Source="/Assets/logo.png" Width="32" Height="32" VerticalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="Movie" FontSize="28" FontWeight="Bold" Foreground="White"/>
+                        <TextBlock Text="Hub" FontSize="28" FontWeight="Bold" Foreground="#F97316"/>
+                    </StackPanel>
+                </StackPanel>
+
+
+                <Grid ColumnDefinitions="*,*">
+                    <Button Grid.Column="0" Content="Login"
+                        Command="{Binding SwitchToLoginCommand}"
+                        Background="Transparent" Foreground="{Binding LoginColor}"
+                        HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Padding="0,8"/>
+
+                    <Button Grid.Column="1" Content="Register"
+                        Command="{Binding SwitchToRegisterCommand}"
+                        Background="Transparent" Foreground="{Binding RegisterColor}"
+                        HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Padding="0,8"/>
+
+                </Grid>
+
+
+                <StackPanel Spacing="16">
+
+
+                    <StackPanel Spacing="6" IsVisible="{Binding !IsLoginTab}">
+                        <TextBlock Text="Email" Foreground="White" FontSize="14"/>
+                        <TextBox Text="{Binding Email}"
+                                 PlaceholderText="your@email.com"
+                                 Background="#3A3A3C"
+                                 Foreground="White"
+                                 BorderBrush="#48484A"
+                                 CornerRadius="8"
+                                 Padding="12,10"/>
+                    </StackPanel>
+
+
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="Username" Foreground="White" FontSize="14"/>
+                        <TextBox Text="{Binding Username}"
+                                 PlaceholderText="Enter username"
+                                 Background="#3A3A3C"
+                                 Foreground="White"
+                                 BorderBrush="#48484A"
+                                 CornerRadius="8"
+                                 Padding="12,10"/>
+                    </StackPanel>
+
+
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="Password" Foreground="White" FontSize="14"/>
+                        <TextBox Text="{Binding Password}"
+                                 PlaceholderText="Enter password"
+                                 PasswordChar="•"
+                                 Background="#3A3A3C"
+                                 Foreground="White"
+                                 BorderBrush="#48484A"
+                                 CornerRadius="8"
+                                 Padding="12,10"/>
+                    </StackPanel>
+                </StackPanel>
+
+
+                <TextBlock Text="{Binding ErrorMessage}"
+                           Foreground="#FF453A"
+                           FontSize="13"
+                           IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                           HorizontalAlignment="Center"/>
+
+
+                <Button Command="{Binding SubmitCommand}"
+                        Content="{Binding ButtonMessage}"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"
+                        Background="#F97316"
+                        Foreground="White"
+                        CornerRadius="8"
+                        Padding="0,14"
+                        FontSize="16"
+                        FontWeight="SemiBold">
+                </Button>
+
+            </StackPanel>
+        </Border>
+    </Grid>
+
+</UserControl>
