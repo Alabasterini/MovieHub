@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MovieHub.Client.Exceptions;
 using MovieHub.Client.Models.Auth;
 using MovieHub.Client.Services;
 using System;
@@ -30,6 +31,10 @@ public partial class AuthViewModel(ApiClient apiClient, SessionService sessionSe
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(SubmitCommand))]
     private string _password = string.Empty;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SubmitCommand))]
+    private string _passwordRegister = string.Empty;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(SubmitCommand))]
@@ -122,11 +127,12 @@ public partial class AuthViewModel(ApiClient apiClient, SessionService sessionSe
 
         if (IsLoginTab)
         {
-            return Username.Length != 0 && Password.Length != 0;
+            return Email.Length != 0 && Password.Length != 0;
         }
 
         if (!IsLoginTab)
         {
+            if (Password != PasswordRegister) ErrorMessage = new PasswordMissMatchException("Passwords doesn't match").Message;
             return IsValidEmail(Email) && Username.Length != 0 && Password.Length != 0;
         }
         return false;

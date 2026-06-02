@@ -40,21 +40,7 @@
 
 
                 <StackPanel Spacing="16">
-
-
                     <StackPanel Spacing="6" IsVisible="{Binding !IsLoginTab}">
-                        <TextBlock Text="Email" Foreground="White" FontSize="14"/>
-                        <TextBox Text="{Binding Email}"
-                                 PlaceholderText="your@email.com"
-                                 Background="#3A3A3C"
-                                 Foreground="White"
-                                 BorderBrush="#48484A"
-                                 CornerRadius="8"
-                                 Padding="12,10"/>
-                    </StackPanel>
-
-
-                    <StackPanel Spacing="6">
                         <TextBlock Text="Username" Foreground="White" FontSize="14"/>
                         <TextBox Text="{Binding Username}"
                                  PlaceholderText="Enter username"
@@ -65,10 +51,32 @@
                                  Padding="12,10"/>
                     </StackPanel>
 
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="Email" Foreground="White" FontSize="14"/>
+                        <TextBox Text="{Binding Email}"
+                                 PlaceholderText="your@email.com"
+                                 Background="#3A3A3C"
+                                 Foreground="White"
+                                 BorderBrush="#48484A"
+                                 CornerRadius="8"
+                                 Padding="12,10"/>
+                    </StackPanel>
 
                     <StackPanel Spacing="6">
                         <TextBlock Text="Password" Foreground="White" FontSize="14"/>
                         <TextBox Text="{Binding Password}"
+                                 PlaceholderText="Enter password"
+                                 PasswordChar="•"
+                                 Background="#3A3A3C"
+                                 Foreground="White"
+                                 BorderBrush="#48484A"
+                                 CornerRadius="8"
+                                 Padding="12,10"/>
+                    </StackPanel>
+
+                    <StackPanel Spacing="6" IsVisible="{Binding !IsLoginTab}">
+                        <TextBlock Text="Password" Foreground="White" FontSize="14"/>
+                        <TextBox Text="{Binding PasswordRegister}"
                                  PlaceholderText="Enter password"
                                  PasswordChar="•"
                                  Background="#3A3A3C"
