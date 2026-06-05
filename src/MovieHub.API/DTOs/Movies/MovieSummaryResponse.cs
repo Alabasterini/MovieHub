@@ -8,4 +8,6 @@ public class MovieSummaryResponse
     public string? PosterUrl { get; set; }
     public required MovieGenreSummaryResponse Genre { get; set; }
     public required DirectorSummaryResponse Director { get; set; }
+    
+    public double? AverageScore { get; set; }
 }

@@ -65,7 +65,7 @@
                     <StackPanel Spacing="6">
                         <TextBlock Text="Password" Foreground="White" FontSize="14"/>
                         <TextBox Text="{Binding Password}"
-                                 PlaceholderText="Enter password"
+                                  PlaceholderText="Enter password"
                                  PasswordChar="•"
                                  Background="#3A3A3C"
                                  Foreground="White"

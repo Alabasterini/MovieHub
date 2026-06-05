@@ -38,7 +38,7 @@ public partial class AuthViewModel(ApiClient apiClient, SessionService sessionSe
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(SubmitCommand))]
-    private bool _isLoading = false;
+    private bool _isLoading;
 
     [ObservableProperty]
     private string _errorMessage = string.Empty;
@@ -63,7 +63,7 @@ public partial class AuthViewModel(ApiClient apiClient, SessionService sessionSe
 
             var response = await _apiClient.LoginAsync(new LoginRequest { Email = Email, Password = Password });
             _sessionService.SetSession(response.AccessToken, response.Username, response.Role);
-            //_navigationService.NavigateTo<BrowseViewModel>();
+            _navigationService.NavigateTo<MainViewModel>();
         }
         catch (Exception ex)
         {
@@ -83,9 +83,9 @@ public partial class AuthViewModel(ApiClient apiClient, SessionService sessionSe
 
             await _apiClient.RegisterAsync(new RegisterRequest { Username = Username, Email = Email, Password = Password });
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            ErrorMessage = new HttpRequestException(ex.Message).Message;
+            ErrorMessage = new HttpRequestException("There was problem while registering").Message;
         }
         finally
         {
@@ -108,7 +108,7 @@ public partial class AuthViewModel(ApiClient apiClient, SessionService sessionSe
         IsLoginTab = false;
         LoginColor = "#636366";
         RegisterColor = "#F97316";
-        ButtonMessage = "Register";
+        ButtonMessage = "Create Account";
     }
     [RelayCommand(CanExecute = nameof(CanSubmit))]
     private async Task SubmitAsync()
@@ -127,17 +127,20 @@ public partial class AuthViewModel(ApiClient apiClient, SessionService sessionSe
 
         if (IsLoginTab)
         {
-            return Email.Length != 0 && Password.Length != 0;
+            ErrorMessage = string.Empty;
+            return Email.Length != 0 || Password.Length != 0;
         }
 
         if (!IsLoginTab)
         {
             if (Password != PasswordRegister) ErrorMessage = new PasswordMissMatchException("Passwords doesn't match").Message;
-            return IsValidEmail(Email) && Username.Length != 0 && Password.Length != 0;
+            if (Password == PasswordRegister) ErrorMessage = string.Empty;
+            return IsValidEmail(Email) && Username.Length != 0 && Password.Length != 0 && Password == PasswordRegister;
         }
+        
         return false;
     }
-    public static bool IsValidEmail(string email)
+    private static bool IsValidEmail(string email)
     {
         if (string.IsNullOrWhiteSpace(email))
             return false;

@@ -1,0 +1,206 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MovieHub.Client.ViewModels"
+             x:Class="MovieHub.Client.Views.MainView"
+             x:DataType="vm:MainViewModel">
+
+    <Grid ColumnDefinitions="240,*">
+        
+        <Border Grid.Column="0" Background="#1C1C1E"
+                BorderBrush="#2C2C2E" BorderThickness="0,0,1,0">
+            <DockPanel>
+                
+                <StackPanel DockPanel.Dock="Top" Margin="20,28,20,32">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <Image Source="/Assets/logo.png" Width="32" Height="32" VerticalAlignment="Center"/>
+                        <TextBlock VerticalAlignment="Center" FontSize="18" FontWeight="Bold">
+                            <Run Text="Movie" Foreground="White"/>
+                            <Run Text="Hub" Foreground="#F5A623"/>
+                        </TextBlock>
+                    </StackPanel>
+
+                    <TextBlock Margin="0,12,0,0" FontSize="12" Foreground="#8E8E93">
+                        <Run Text="Welcome "/>
+                        <Run Text="{Binding Username}" Foreground="#F5A623" FontWeight="SemiBold"/>
+                    </TextBlock>
+                </StackPanel>
+                
+                <StackPanel DockPanel.Dock="Top" Margin="12,0" Spacing="4">
+                    <Border Background="#F5A623" CornerRadius="8" Padding="12,10">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <Image Source="/Assets/star.png" Width="32" Height="32" VerticalAlignment="Center"/>
+                            <TextBlock Text="Przeglądaj" Foreground="White"
+                                       FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                    
+                    <Button Command="{Binding NavigateToAdminPanelCommand}"
+                            IsVisible="{Binding IsAdmin}"
+                            Background="Transparent" HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Left"
+                            Padding="12,10" CornerRadius="8">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <Image Source="/Assets/admin.png" Width="32" Height="32" VerticalAlignment="Center"/>
+                            <TextBlock Text="Admin Panel" Foreground="#EBEBF5"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                
+                <Button DockPanel.Dock="Bottom"
+                        Command="{Binding LogoutCommand}"
+                        Background="Transparent" HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Left"
+                        Margin="12,0,12,20" Padding="12,10" CornerRadius="8">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <Image Source="/Assets/logout.png" Width="32" Height="32" VerticalAlignment="Center"/>
+                        <TextBlock Text="Logout" Foreground="#8E8E93"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <Grid/>
+            </DockPanel>
+        </Border>
+
+
+        <DockPanel Grid.Column="1" Background="#141414" LastChildFill="True">
+
+
+            <StackPanel DockPanel.Dock="Top" Margin="32,28,32,20">
+                <TextBlock Text="Browse movies" FontSize="26" FontWeight="Bold"
+                           Foreground="White" Margin="0,0,0,16"/>
+
+
+                <Grid ColumnDefinitions="*,Auto,Auto" >
+                    <TextBox Grid.Column="0"
+                             Text="{Binding SearchTitle}"
+                             PlaceholderText="Search by title.."
+                             Background="#2C2C2E" Foreground="White"
+                             BorderBrush="#3A3A3C" BorderThickness="1"
+                             CornerRadius="8" Padding="12,8"
+                             Margin="0,0,8,0">
+                        <TextBox.KeyBindings>
+                            <KeyBinding Gesture="Return"
+                                        Command="{Binding SearchCommand}"/>
+                        </TextBox.KeyBindings>
+                    </TextBox>
+
+                    <ComboBox Grid.Column="1"
+                              ItemsSource="{Binding Genres}"
+                              SelectedValueBinding="{Binding IdString}"
+                              SelectedValue="{Binding SelectedGenreId}"
+                              Background="#2C2C2E" Foreground="White"
+                              BorderBrush="#3A3A3C"
+                              MinWidth="160" Margin="0,0,8,0">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="vm:GenreFilterItem">
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <ComboBox Grid.Column="2"
+                              ItemsSource="{Binding Directors}"
+                              SelectedValueBinding="{Binding IdString}"
+                              SelectedValue="{Binding SelectedDirectorId}"
+                              Background="#2C2C2E" Foreground="White"
+                              BorderBrush="#3A3A3C"
+                              MinWidth="180">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="vm:DirectorFilterItem">
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </Grid>
+            </StackPanel>
+            
+            <TextBlock DockPanel.Dock="Top"
+                       Text="{Binding ErrorMessage}"
+                       IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                       Foreground="#FF453A" Margin="32,0,32,12" FontSize="13"/>
+
+            <ProgressBar DockPanel.Dock="Top"
+                         IsIndeterminate="True"
+                         IsVisible="{Binding IsLoading}"
+                         Margin="32,0,32,12" Height="3"
+                         Foreground="#F5A623" Background="Transparent"/>
+            
+            <ScrollViewer Padding="32,0,32,32">
+                <ItemsControl ItemsSource="{Binding Movies}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="vm:MovieSummaryViewModel">
+                            <Button Command="{Binding SelectCommand}"
+                                    Background="Transparent"
+                                    Padding="0" Margin="0,0,16,16"
+                                    CornerRadius="10"
+                                    Cursor="Hand">
+                                <Border Width="200" Background="#1C1C1E"
+                                        CornerRadius="10" ClipToBounds="True">
+                                    <StackPanel>
+                                        <Panel Height="270">
+                                            <Border Background="#2C2C2E"/>
+                                            <Image Source="{Binding PosterUrl}"
+                                                   Stretch="UniformToFill"
+                                                   IsVisible="{Binding PosterUrl,
+                                                       Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                                            <TextBlock Text="🎬"
+                                                       FontSize="48"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"
+                                                       IsVisible="{Binding PosterUrl,
+                                                           Converter={x:Static StringConverters.IsNullOrEmpty}}"/>
+                                        </Panel>
+                                        
+                                        <StackPanel Margin="12,10,12,12" Spacing="6">
+                                            <TextBlock Text="{Binding Title}"
+                                                       Foreground="White"
+                                                       FontWeight="SemiBold"
+                                                       FontSize="13"
+                                                       TextWrapping="Wrap"
+                                                       MaxLines="2"/>
+
+                                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                                <TextBlock Text="{Binding Year}"
+                                                           Foreground="#8E8E93"
+                                                           FontSize="12"/>
+                                                <Border Background="#3A2A00"
+                                                        CornerRadius="4"
+                                                        Padding="6,2">
+                                                    <TextBlock Text="{Binding GenreName}"
+                                                               Foreground="#F5A623"
+                                                               FontSize="11"
+                                                               FontWeight="SemiBold"/>
+                                                </Border>
+                                            </StackPanel>
+
+                                            <StackPanel Orientation="Horizontal" Spacing="4">
+                                                <TextBlock Text="★" Foreground="#F5A623"
+                                                           FontSize="13"/>
+                                                <TextBlock Text="{Binding ScoreDisplay}"
+                                                           Foreground="White"
+                                                           FontSize="13"
+                                                           FontWeight="SemiBold"/>
+                                                <TextBlock Text="/ 10"
+                                                           Foreground="#8E8E93"
+                                                           FontSize="12"
+                                                           VerticalAlignment="Bottom"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+
+        </DockPanel>
+    </Grid>
+</UserControl>

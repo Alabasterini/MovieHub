@@ -1,4 +1,3 @@
-using CommunityToolkit.Mvvm.ComponentModel;
 using MovieHub.Client.Services;
 
 namespace MovieHub.Client.ViewModels;

@@ -26,8 +26,7 @@ public class ApiClient(HttpClient httpClient)
     {
         _httpClient.DefaultRequestHeaders.Authorization = null;
     }
-
-    // ── Auth ────────────────────────────────────────────────────────────────
+    
 
     public async Task<AuthResponse> LoginAsync(LoginRequest request)
     {
@@ -42,8 +41,7 @@ public class ApiClient(HttpClient httpClient)
         var response = await _httpClient.PostAsJsonAsync("/api/auth/register", request);
         response.EnsureSuccessStatusCode();
     }
-
-    // ── Movies ──────────────────────────────────────────────────────────────
+    
 
     public async Task<List<MovieSummaryResponse>> GetMoviesAsync(
         string? title = null,
@@ -92,8 +90,7 @@ public class ApiClient(HttpClient httpClient)
         var response = await _httpClient.DeleteAsync($"/api/movies/{id}");
         response.EnsureSuccessStatusCode();
     }
-
-    // ── Ratings ─────────────────────────────────────────────────────────────
+    
 
     public async Task<RatingResponse> CreateRatingAsync(int movieId, CreateRatingRequest request)
     {
@@ -110,8 +107,7 @@ public class ApiClient(HttpClient httpClient)
         return await response.Content.ReadFromJsonAsync<RatingResponse>()
             ?? throw new InvalidOperationException("API returned null");
     }
-
-    // ── Genres ──────────────────────────────────────────────────────────────
+    
 
     public async Task<List<GenreResponse>> GetGenresAsync()
     {
@@ -128,8 +124,7 @@ public class ApiClient(HttpClient httpClient)
         return await response.Content.ReadFromJsonAsync<GenreResponse>()
             ?? throw new InvalidOperationException("API returned null");
     }
-
-    // ── Directors ────────────────────────────────────────────────────────────
+    
 
     public async Task<List<DirectorResponse>> GetDirectorsAsync()
     {
