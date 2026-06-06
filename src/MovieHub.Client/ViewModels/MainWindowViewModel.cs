@@ -1,3 +1,4 @@
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MovieHub.Client.Services;
 
@@ -12,6 +13,12 @@ public partial class MainWindowViewModel : ViewModelBase
     public bool ShowShell => CurrentView is not AuthViewModel;
     public bool IsAdmin => _sessionService.IsAdmin;
     public string? Username => _sessionService.Username;
+    
+    [ObservableProperty]
+    private string _browseBackgroundColor = "#F5A623";
+    
+    [ObservableProperty]
+    private string _adminBackgroundColor = "Transparent";
 
     public MainWindowViewModel(NavigationService navigationService, SessionService sessionService)
     {
@@ -35,13 +42,15 @@ public partial class MainWindowViewModel : ViewModelBase
     [RelayCommand]
     private void NavigateToAdminPanel()
     {
-        // _navigationService.NavigateTo<AdminViewModel>();
+         _navigationService.NavigateTo<AdminViewModel>();
+         ChangeBackgroundColor("Admin");
     }
     
     [RelayCommand]
     private void NavigateToBrowsePanel()
     {
-         _navigationService.NavigateTo<SearchViewModel>();
+         _navigationService.NavigateTo<BrowseViewModel>();
+         ChangeBackgroundColor("Browse");
     }
 
     [RelayCommand]
@@ -49,5 +58,19 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         _sessionService.Clear();
         _navigationService.NavigateTo<AuthViewModel>();
+    }
+
+    private void ChangeBackgroundColor(string selectedView)
+    {
+        if (selectedView == "Browse")
+        {
+            BrowseBackgroundColor = "#F5A623";
+            AdminBackgroundColor = "Transparent";
+        }
+        else
+        {
+            BrowseBackgroundColor = "Transparent";
+            AdminBackgroundColor = "#F5A623";
+        }
     }
 }

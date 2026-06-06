@@ -69,11 +69,11 @@ public class ApiClient(HttpClient httpClient)
             ?? throw new InvalidOperationException("API returned null");
     }
 
-    public async Task<MovieDetailResponse> CreateMovieAsync(CreateMovieRequest request)
+    public async Task<MovieSummaryResponse> CreateMovieAsync(CreateMovieRequest request)
     {
         var response = await _httpClient.PostAsJsonAsync("/api/movies", request);
         response.EnsureSuccessStatusCode();
-        return await response.Content.ReadFromJsonAsync<MovieDetailResponse>()
+        return await response.Content.ReadFromJsonAsync<MovieSummaryResponse>()
             ?? throw new InvalidOperationException("API returned null");
     }
 

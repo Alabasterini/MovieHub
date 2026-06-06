@@ -51,7 +51,7 @@ public class MovieService (AppDbContext dbContext)
                     LastName = m.Director.LastName,
                     Nationality = m.Director.Nationality
                 },
-                AverageScore = m.Ratings.Any()
+                AverageRating = m.Ratings.Any()
                     ? m.Ratings.Average(r => (double)r.Value)
                     : (double?)null
             })
@@ -177,7 +177,7 @@ public class MovieService (AppDbContext dbContext)
             PosterUrl = movie.PosterUrl,
             Genre = MapToGenreSummary(movie.Genre),
             Director = MapToDirectorSummary(movie.Director),
-            AverageScore = null
+            AverageRating = null
         };
     }
 

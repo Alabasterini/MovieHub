@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -14,6 +13,9 @@ namespace MovieHub.Client.ViewModels;
 
 public partial class MovieDetailViewModel(ApiClient api, SessionService session) : ViewModelBase
 {
+
+    private bool _starsAdded;
+    
     [ObservableProperty] 
     private int _movieId;
     
@@ -39,7 +41,7 @@ public partial class MovieDetailViewModel(ApiClient api, SessionService session)
     private IReadOnlyList<RatingResponse>? _ratings;
     
     [ObservableProperty] 
-    private double? _averageScore;
+    private double? _averageRating;
     
     [ObservableProperty] 
     private bool _isLoading;
@@ -63,8 +65,8 @@ public partial class MovieDetailViewModel(ApiClient api, SessionService session)
 
     public string DirectorFullName => Director is null ? string.Empty : $"{Director.FirstName} {Director.LastName}";
     public string GenreName => Genre?.Name ?? string.Empty;
-    public string ScoreDisplay => AverageScore.HasValue
-        ? AverageScore.Value.ToString("F1")
+    public string ScoreDisplay => AverageRating.HasValue
+        ? AverageRating.Value.ToString("F1")
         : "Not rated yet";
 
     partial void OnMovieIdChanged(int value)
@@ -86,15 +88,19 @@ public partial class MovieDetailViewModel(ApiClient api, SessionService session)
             OnPropertyChanged(nameof(GenreName));
             Director = movie.Director;
             OnPropertyChanged(nameof(DirectorFullName));
-            AverageScore = movie.AverageScore;
+            AverageRating = movie.AverageRating;
             Ratings = movie.Ratings;
             OnPropertyChanged(nameof(ScoreDisplay));
-            
-            for (var i = 1; i <= 10; i++)
+            if (!_starsAdded)
             {
-                var star = new StarViewModel(i, SetRating);
-                Stars.Add(star);
+                for (var i = 1; i <= 10; i++)
+                {
+                    var star = new StarViewModel(i, SetRating);
+                    Stars.Add(star);
+                }
+                _starsAdded = true;
             }
+            
             var existingRating = movie.Ratings
                 .FirstOrDefault(r => r.UserId == session.UserId);
 
@@ -141,9 +147,9 @@ public partial class MovieDetailViewModel(ApiClient api, SessionService session)
             }
     
             ShowCommentBox = false;
-            OnPropertyChanged(nameof(ScoreDisplay));
+            await LoadMovieAsync();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             ErrorMessage = $"MovieId: {MovieId}, UserRating: {UserRating}";
         }

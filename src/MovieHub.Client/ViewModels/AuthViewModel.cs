@@ -64,7 +64,7 @@ public partial class AuthViewModel(ApiClient apiClient, SessionService sessionSe
             var response = await _apiClient.LoginAsync(new LoginRequest { Email = Email, Password = Password });
             _sessionService.SetSession(response.AccessToken, response.Username, response.Role, response.UserId);
             _apiClient.SetAuthToken(response.AccessToken); 
-            _navigationService.NavigateTo<SearchViewModel>();
+            _navigationService.NavigateTo<BrowseViewModel>();
         }
         catch (Exception ex)
         {

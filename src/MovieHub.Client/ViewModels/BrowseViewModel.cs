@@ -7,7 +7,7 @@ using MovieHub.Client.Services;
 
 namespace MovieHub.Client.ViewModels;
 
-public partial class SearchViewModel(ApiClient api, NavigationService navigation) : ViewModelBase
+public partial class BrowseViewModel(ApiClient api, NavigationService navigation) : ViewModelBase
 {
     private readonly ApiClient _api = api;
     private readonly NavigationService _navigation = navigation;
@@ -32,7 +32,7 @@ public partial class SearchViewModel(ApiClient api, NavigationService navigation
     public ObservableCollection<DirectorFilterItem> Directors { get; } = [];
     
     
-    public async Task InitializeAsync()
+     public async Task InitializeAsync()
     {
         await Task.WhenAll(LoadGenresAsync(), LoadDirectorsAsync());
         await LoadMoviesAsync();

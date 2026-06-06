@@ -10,7 +10,7 @@ using MovieHub.Client.Views;
 
 namespace MovieHub.Client;
 
-public partial class App : Application
+public class App : Application
 {
     public static IServiceProvider Services { get; private set; } = null!;
 
@@ -51,8 +51,8 @@ public partial class App : Application
 
         services.AddSingleton<MainWindowViewModel>();
         services.AddTransient<AuthViewModel>();
-        services.AddTransient<SearchViewModel>();
+        services.AddTransient<BrowseViewModel>();
         services.AddTransient<MovieDetailViewModel>();
-        //services.AddTransient<AdminViewModel>();
+        services.AddTransient<AdminViewModel>();
     }
 }

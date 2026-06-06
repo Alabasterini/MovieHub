@@ -13,5 +13,5 @@ public class MovieDetailResponse
     public required MovieGenreSummaryResponse Genre { get; set; }
     public required DirectorSummaryResponse Director { get; set; }
     public required IReadOnlyList<RatingResponse> Ratings { get; set; }
-    public double? AverageScore { get; set; }
+    public double? AverageRating { get; set; }
 }

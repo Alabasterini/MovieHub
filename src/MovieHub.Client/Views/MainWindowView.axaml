@@ -32,7 +32,7 @@
                 
                 <StackPanel DockPanel.Dock="Top" Margin="12,0" Spacing="4">
                     <Button Command="{Binding NavigateToBrowsePanelCommand}"
-                            Background="#F5A623" HorizontalAlignment="Stretch"
+                            Background="{Binding BrowseBackgroundColor}" HorizontalAlignment="Stretch"
                             HorizontalContentAlignment="Left"
                             Padding="12,10" CornerRadius="8">
                         <StackPanel Orientation="Horizontal" Spacing="10">
@@ -44,7 +44,7 @@
                     
                     <Button Command="{Binding NavigateToAdminPanelCommand}"
                             IsVisible="{Binding IsAdmin}"
-                            Background="Transparent" HorizontalAlignment="Stretch"
+                            Background="{Binding AdminBackgroundColor}" HorizontalAlignment="Stretch"
                             HorizontalContentAlignment="Left"
                             Padding="12,10" CornerRadius="8">
                         <StackPanel Orientation="Horizontal" Spacing="10">

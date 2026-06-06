@@ -1,8 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:MovieHub.Client.ViewModels"
-             x:Class="MovieHub.Client.Views.SearchView"
-             x:DataType="vm:SearchViewModel">
+             x:Class="MovieHub.Client.Views.BrowseView"
+             x:DataType="vm:BrowseViewModel">
 
 
         <DockPanel Background="#141414" LastChildFill="True">

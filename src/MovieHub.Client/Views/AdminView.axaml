@@ -1,0 +1,220 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MovieHub.Client.ViewModels"
+             xmlns:admin="using:MovieHub.Client.ViewModels.Admin"
+             x:Class="MovieHub.Client.Views.AdminView"
+             x:DataType="vm:AdminViewModel">
+    
+
+    <Grid ColumnDefinitions="220,*" Background="#141414">
+        
+        <Border Grid.Column="0" Background="#1C1C1E"
+                BorderBrush="#2C2C2E" BorderThickness="0,0,1,0">
+            <StackPanel Margin="12,24,12,0" Spacing="4">
+                <TextBlock Text="MOVIES" Foreground="#8E8E93" FontSize="11"
+                           FontWeight="SemiBold" Margin="12,0,0,8"/>
+
+                <Button Content="Add Movie" Command="{Binding ShowAddMovieCommand}"
+                        HorizontalAlignment="Stretch" HorizontalContentAlignment="Left"
+                        Padding="12,10" CornerRadius="8" FontSize="14"
+                        Background="{Binding ActiveButton, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                        Foreground="#EBEBF5"/>
+
+                <Button Content="Edit Movie" Command="{Binding ShowEditMovieCommand}"
+                        HorizontalAlignment="Stretch" HorizontalContentAlignment="Left"
+                        Padding="12,10" CornerRadius="8" FontSize="14"
+                        Background="Transparent" Foreground="#EBEBF5"/>
+
+                <Button Content="Delete Movie" Command="{Binding ShowDeleteMovieCommand}"
+                        HorizontalAlignment="Stretch" HorizontalContentAlignment="Left"
+                        Padding="12,10" CornerRadius="8" FontSize="14"
+                        Background="Transparent" Foreground="#FF453A"/>
+
+                <TextBlock Text="GENRES" Foreground="#8E8E93" FontSize="11"
+                           FontWeight="SemiBold" Margin="12,16,0,8"/>
+
+                <Button Content="Add Genre" Command="{Binding ShowAddGenreCommand}"
+                        HorizontalAlignment="Stretch" HorizontalContentAlignment="Left"
+                        Padding="12,10" CornerRadius="8" FontSize="14"
+                        Background="Transparent" Foreground="#EBEBF5"/>
+
+                <TextBlock Text="DIRECTORS" Foreground="#8E8E93" FontSize="11"
+                           FontWeight="SemiBold" Margin="12,16,0,8"/>
+
+                <Button Content="Add Director" Command="{Binding ShowAddDirectorCommand}"
+                        HorizontalAlignment="Stretch" HorizontalContentAlignment="Left"
+                        Padding="12,10" CornerRadius="8" FontSize="14"
+                        Background="Transparent" Foreground="#EBEBF5"/>
+            </StackPanel>
+        </Border>
+        
+        <ScrollViewer Grid.Column="1">
+    <ContentControl Content="{Binding ActiveForm}">
+        <ContentControl.DataTemplates>
+
+            <DataTemplate DataType="admin:AddMovieFormViewModel">
+                <StackPanel Margin="32" Spacing="12" MaxWidth="500">
+                    <TextBlock Text="Add Movie" FontSize="22" FontWeight="Bold" Foreground="White" Margin="0,0,0,8"/>
+                    <TextBlock Text="Title *" Foreground="#8E8E93" FontSize="12"/>
+                    <TextBox Text="{Binding Title}" Background="#2C2C2E" Foreground="White"
+                             BorderBrush="#3A3A3C" CornerRadius="8" Padding="12,8"/>
+                    <TextBlock Text="Year *" Foreground="#8E8E93" FontSize="12"/>
+                    <NumericUpDown Value="{Binding Year}" Minimum="1888" Maximum="2100"
+                                   Background="#2C2C2E" Foreground="White" BorderBrush="#3A3A3C" CornerRadius="8"/>
+                    <TextBlock Text="Description" Foreground="#8E8E93" FontSize="12"/>
+                    <TextBox Text="{Binding Description}" Background="#2C2C2E" Foreground="White"
+                             BorderBrush="#3A3A3C" CornerRadius="8" Padding="12,8"
+                             TextWrapping="Wrap" Height="80"/>
+                    <TextBlock Text="Poster URL" Foreground="#8E8E93" FontSize="12"/>
+                    <TextBox Text="{Binding PosterUrl}" Background="#2C2C2E" Foreground="White"
+                             BorderBrush="#3A3A3C" CornerRadius="8" Padding="12,8"/>
+                    <TextBlock Text="Genre *" Foreground="#8E8E93" FontSize="12"/>
+                    <ComboBox ItemsSource="{Binding Genres}" SelectedItem="{Binding SelectedGenre}"
+                              HorizontalAlignment="Stretch" Background="#2C2C2E" Foreground="White" BorderBrush="#3A3A3C">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="admin:GenreListItem">
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <TextBlock Text="Director *" Foreground="#8E8E93" FontSize="12"/>
+                    <ComboBox ItemsSource="{Binding Directors}" SelectedItem="{Binding SelectedDirector}"
+                              HorizontalAlignment="Stretch" Background="#2C2C2E" Foreground="White" BorderBrush="#3A3A3C">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="admin:DirectorListItem">
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button Content="Add Movie" Command="{Binding SubmitCommand}"
+                            Background="#F5A623" Foreground="White" FontWeight="SemiBold"
+                            CornerRadius="8" Padding="20,10" Margin="0,8,0,0"/>
+                    <TextBlock Text="{Binding SuccessMessage}" Foreground="#30D158" FontSize="13"
+                               IsVisible="{Binding SuccessMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                    <TextBlock Text="{Binding ErrorMessage}" Foreground="#FF453A" FontSize="13"
+                               IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                </StackPanel>
+            </DataTemplate>
+
+            <DataTemplate DataType="admin:EditMovieFormViewModel">
+                <StackPanel Margin="32" Spacing="12" MaxWidth="500">
+                    <TextBlock Text="Edit Movie" FontSize="22" FontWeight="Bold" Foreground="White" Margin="0,0,0,8"/>
+                    <TextBlock Text="Select Movie" Foreground="#8E8E93" FontSize="12"/>
+                    <ComboBox ItemsSource="{Binding Movies}" SelectedItem="{Binding SelectedMovie}"
+                              HorizontalAlignment="Stretch" Background="#2C2C2E" Foreground="White" BorderBrush="#3A3A3C">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="admin:MovieListItem">
+                                <TextBlock Text="{Binding Title}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <StackPanel Spacing="12" IsVisible="{Binding MovieLoaded}">
+                        <TextBlock Text="Title" Foreground="#8E8E93" FontSize="12"/>
+                        <TextBox Text="{Binding Title}" Background="#2C2C2E" Foreground="White"
+                                 BorderBrush="#3A3A3C" CornerRadius="8" Padding="12,8"/>
+                        <TextBlock Text="Year" Foreground="#8E8E93" FontSize="12"/>
+                        <NumericUpDown Value="{Binding Year}" Minimum="1888" Maximum="2100"
+                                       Background="#2C2C2E" Foreground="White" BorderBrush="#3A3A3C" CornerRadius="8"/>
+                        <TextBlock Text="Description" Foreground="#8E8E93" FontSize="12"/>
+                        <TextBox Text="{Binding Description}" Background="#2C2C2E" Foreground="White"
+                                 BorderBrush="#3A3A3C" CornerRadius="8" Padding="12,8"
+                                 TextWrapping="Wrap" Height="80"/>
+                        <TextBlock Text="Poster URL" Foreground="#8E8E93" FontSize="12"/>
+                        <TextBox Text="{Binding PosterUrl}" Background="#2C2C2E" Foreground="White"
+                                 BorderBrush="#3A3A3C" CornerRadius="8" Padding="12,8"/>
+                        <TextBlock Text="Genre" Foreground="#8E8E93" FontSize="12"/>
+                        <ComboBox ItemsSource="{Binding Genres}" SelectedItem="{Binding SelectedGenre}"
+                                  HorizontalAlignment="Stretch" Background="#2C2C2E" Foreground="White" BorderBrush="#3A3A3C">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="admin:GenreListItem">
+                                    <TextBlock Text="{Binding Name}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <TextBlock Text="Director" Foreground="#8E8E93" FontSize="12"/>
+                        <ComboBox ItemsSource="{Binding Directors}" SelectedItem="{Binding SelectedDirector}"
+                                  HorizontalAlignment="Stretch" Background="#2C2C2E" Foreground="White" BorderBrush="#3A3A3C">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="admin:DirectorListItem">
+                                    <TextBlock Text="{Binding Name}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <Button Content="Save Changes" Command="{Binding SubmitCommand}"
+                                Background="#F5A623" Foreground="White" FontWeight="SemiBold"
+                                CornerRadius="8" Padding="20,10" Margin="0,8,0,0"/>
+                    </StackPanel>
+                    <TextBlock Text="{Binding SuccessMessage}" Foreground="#30D158" FontSize="13"
+                               IsVisible="{Binding SuccessMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                    <TextBlock Text="{Binding ErrorMessage}" Foreground="#FF453A" FontSize="13"
+                               IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                </StackPanel>
+            </DataTemplate>
+
+            <DataTemplate DataType="admin:DeleteMovieFormViewModel">
+                <StackPanel Margin="32" Spacing="12" MaxWidth="500">
+                    <TextBlock Text="Delete Movie" FontSize="22" FontWeight="Bold" Foreground="White" Margin="0,0,0,8"/>
+                    <TextBlock Text="Select Movie" Foreground="#8E8E93" FontSize="12"/>
+                    <ComboBox ItemsSource="{Binding Movies}" SelectedItem="{Binding SelectedMovie}"
+                              HorizontalAlignment="Stretch" Background="#2C2C2E" Foreground="White" BorderBrush="#3A3A3C">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="admin:MovieListItem">
+                                <TextBlock Text="{Binding Title}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button Content="Delete Movie" Command="{Binding SubmitCommand}"
+                            IsEnabled="{Binding SelectedMovie, Converter={x:Static ObjectConverters.IsNotNull}}"
+                            Background="#FF453A" Foreground="White" FontWeight="SemiBold"
+                            CornerRadius="8" Padding="20,10" Margin="0,8,0,0"/>
+                    <TextBlock Text="{Binding SuccessMessage}" Foreground="#30D158" FontSize="13"
+                               IsVisible="{Binding SuccessMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                    <TextBlock Text="{Binding ErrorMessage}" Foreground="#FF453A" FontSize="13"
+                               IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                </StackPanel>
+            </DataTemplate>
+
+            <DataTemplate DataType="admin:AddGenreFormViewModel">
+                <StackPanel Margin="32" Spacing="12" MaxWidth="500">
+                    <TextBlock Text="Add Genre" FontSize="22" FontWeight="Bold" Foreground="White" Margin="0,0,0,8"/>
+                    <TextBlock Text="Name *" Foreground="#8E8E93" FontSize="12"/>
+                    <TextBox Text="{Binding Name}" Background="#2C2C2E" Foreground="White"
+                             BorderBrush="#3A3A3C" CornerRadius="8" Padding="12,8"/>
+                    <Button Content="Add Genre" Command="{Binding SubmitCommand}"
+                            Background="#F5A623" Foreground="White" FontWeight="SemiBold"
+                            CornerRadius="8" Padding="20,10" Margin="0,8,0,0"/>
+                    <TextBlock Text="{Binding SuccessMessage}" Foreground="#30D158" FontSize="13"
+                               IsVisible="{Binding SuccessMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                    <TextBlock Text="{Binding ErrorMessage}" Foreground="#FF453A" FontSize="13"
+                               IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                </StackPanel>
+            </DataTemplate>
+
+            <DataTemplate DataType="admin:AddDirectorFormViewModel">
+                <StackPanel Margin="32" Spacing="12" MaxWidth="500">
+                    <TextBlock Text="Add Director" FontSize="22" FontWeight="Bold" Foreground="White" Margin="0,0,0,8"/>
+                    <TextBlock Text="First Name *" Foreground="#8E8E93" FontSize="12"/>
+                    <TextBox Text="{Binding FirstName}" Background="#2C2C2E" Foreground="White"
+                             BorderBrush="#3A3A3C" CornerRadius="8" Padding="12,8"/>
+                    <TextBlock Text="Last Name *" Foreground="#8E8E93" FontSize="12"/>
+                    <TextBox Text="{Binding LastName}" Background="#2C2C2E" Foreground="White"
+                             BorderBrush="#3A3A3C" CornerRadius="8" Padding="12,8"/>
+                    <TextBlock Text="Nationality" Foreground="#8E8E93" FontSize="12"/>
+                    <TextBox Text="{Binding Nationality}" Background="#2C2C2E" Foreground="White"
+                             BorderBrush="#3A3A3C" CornerRadius="8" Padding="12,8"/>
+                    <Button Content="Add Director" Command="{Binding SubmitCommand}"
+                            Background="#F5A623" Foreground="White" FontWeight="SemiBold"
+                            CornerRadius="8" Padding="20,10" Margin="0,8,0,0"/>
+                    <TextBlock Text="{Binding SuccessMessage}" Foreground="#30D158" FontSize="13"
+                               IsVisible="{Binding SuccessMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                    <TextBlock Text="{Binding ErrorMessage}" Foreground="#FF453A" FontSize="13"
+                               IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                </StackPanel>
+            </DataTemplate>
+
+        </ContentControl.DataTemplates>
+    </ContentControl>
+</ScrollViewer>
+
+    </Grid>
+</UserControl>
