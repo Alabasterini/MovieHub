@@ -5,7 +5,75 @@
         x:DataType="vm:MainWindowViewModel"
         Title="MovieHub"
         Width="1280" Height="800">
+    
+    
+    <Grid ColumnDefinitions="Auto,*">
+        
+        
+        <Border Grid.Column="0" Width="240" Background="#1C1C1E"
+                IsVisible="{Binding ShowShell}"
+                BorderBrush="#2C2C2E" BorderThickness="0,0,1,0">
+            <DockPanel>
+                
+                <StackPanel DockPanel.Dock="Top" Margin="20,28,20,32">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <Image Source="/Assets/logo.png" Width="32" Height="32" VerticalAlignment="Center"/>
+                        <TextBlock VerticalAlignment="Center" FontSize="18" FontWeight="Bold">
+                            <Run Text="Movie" Foreground="White"/>
+                            <Run Text="Hub" Foreground="#F5A623"/>
+                        </TextBlock>
+                    </StackPanel>
 
-    <ContentControl Content="{Binding CurrentView}"/>
+                    <TextBlock Margin="0,12,0,0" FontSize="12" Foreground="#8E8E93">
+                        <Run Text="Welcome "/>
+                        <Run Text="{Binding Username}" Foreground="#F5A623" FontWeight="SemiBold"/>
+                    </TextBlock>
+                </StackPanel>
+                
+                <StackPanel DockPanel.Dock="Top" Margin="12,0" Spacing="4">
+                    <Button Command="{Binding NavigateToBrowsePanelCommand}"
+                            Background="#F5A623" HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Left"
+                            Padding="12,10" CornerRadius="8">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <Image Source="/Assets/star.png" Width="32" Height="32" VerticalAlignment="Center"/>
+                            <TextBlock Text="Browse" Foreground="#EBEBF5"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    
+                    <Button Command="{Binding NavigateToAdminPanelCommand}"
+                            IsVisible="{Binding IsAdmin}"
+                            Background="Transparent" HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Left"
+                            Padding="12,10" CornerRadius="8">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <Image Source="/Assets/admin.png" Width="32" Height="32" VerticalAlignment="Center"/>
+                            <TextBlock Text="Admin Panel" Foreground="#EBEBF5"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                
+                <Button DockPanel.Dock="Bottom"
+                        Command="{Binding LogoutCommand}"
+                        Background="Transparent" HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Left"
+                        Margin="12,0,12,20" Padding="12,10" CornerRadius="8">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <Image Source="/Assets/logout.png" Width="32" Height="32" VerticalAlignment="Center"/>
+                        <TextBlock Text="Logout" Foreground="#8E8E93"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
 
+                <Grid/>
+            </DockPanel>
+        </Border>
+        
+        <ContentControl Grid.Column="1"
+                        Content="{Binding CurrentView}"/>
+        
+        
+    </Grid>
 </Window>

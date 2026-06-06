@@ -7,14 +7,10 @@ using MovieHub.Client.Services;
 
 namespace MovieHub.Client.ViewModels;
 
-public partial class MainViewModel(ApiClient api, NavigationService navigation, SessionService session) : ViewModelBase
+public partial class SearchViewModel(ApiClient api, NavigationService navigation) : ViewModelBase
 {
     private readonly ApiClient _api = api;
-    private readonly NavigationService _navigation =  navigation;
-    private readonly SessionService _sessionService = session;
-
-    public bool IsAdmin { get => _sessionService.IsAdmin; }
-    public string? Username { get => _sessionService.Username; }
+    private readonly NavigationService _navigation = navigation;
 
     [ObservableProperty] 
     private string _searchTitle = string.Empty;
@@ -44,19 +40,6 @@ public partial class MainViewModel(ApiClient api, NavigationService navigation, 
 
     [RelayCommand]
     private async Task SearchAsync() => await LoadMoviesAsync();
-
-    [RelayCommand]
-    private void NavigateToAdminPanel()
-    {
-        //_navigation.NavigateTo<AdminViewModel>();
-    }
-
-    [RelayCommand]
-    private void Logout()
-    {
-        _sessionService.Clear();
-        _navigation.NavigateTo<AuthViewModel>();
-    }
 
     private async Task LoadMoviesAsync()
     {
@@ -89,7 +72,7 @@ public partial class MainViewModel(ApiClient api, NavigationService navigation, 
 
     private void NavigateToMovie(int movieId)
     {
-        // _navigation.NavigateTo<MovieDetailViewModel>(movieId);
+        _navigation.NavigateToMovie(movieId);
     }
 
     private async Task LoadGenresAsync()

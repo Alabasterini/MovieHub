@@ -51,8 +51,8 @@ public partial class App : Application
 
         services.AddSingleton<MainWindowViewModel>();
         services.AddTransient<AuthViewModel>();
-        services.AddTransient<MainViewModel>();
-        //services.AddTransient<MovieDetailViewModel>();
+        services.AddTransient<SearchViewModel>();
+        services.AddTransient<MovieDetailViewModel>();
         //services.AddTransient<AdminViewModel>();
     }
 }

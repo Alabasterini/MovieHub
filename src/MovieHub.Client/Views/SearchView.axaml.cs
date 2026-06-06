@@ -3,14 +3,14 @@ using MovieHub.Client.ViewModels;
 
 namespace MovieHub.Client.Views;
 
-public partial class MainView : UserControl
+public partial class SearchView : UserControl
 {
-    public MainView()
+    public SearchView()
     {
         InitializeComponent();
         DataContextChanged += async (_, _) =>
         {
-            if (DataContext is MainViewModel vm)
+            if (DataContext is SearchViewModel vm)
                 await vm.InitializeAsync();
         };
     }

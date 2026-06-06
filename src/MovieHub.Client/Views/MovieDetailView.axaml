@@ -1,0 +1,125 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MovieHub.Client.ViewModels"
+             x:Class="MovieHub.Client.Views.MovieDetailView"
+             x:DataType="vm:MovieDetailViewModel">
+
+    <Grid ColumnDefinitions="Auto,*" Background="#141414">
+        
+        <Border Grid.Column="0" Width="320" Background="#1C1C1E"
+                Margin="32,32,0,32" CornerRadius="12" ClipToBounds="True">
+            <Panel>
+                <Border Background="#2C2C2E"/>
+                <Image Source="{Binding PosterUrl}"
+                       Stretch="UniformToFill"
+                       IsVisible="{Binding PosterUrl,
+                           Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                <TextBlock Text="🎬" FontSize="64"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           IsVisible="{Binding PosterUrl,
+                               Converter={x:Static StringConverters.IsNullOrEmpty}}"/>
+            </Panel>
+        </Border>
+        
+        <ScrollViewer Grid.Column="1" Padding="40,32,32,32">
+            <StackPanel Spacing="0">
+                
+                <TextBlock Text="{Binding Title}"
+                           FontSize="36" FontWeight="Bold"
+                           Foreground="White"
+                           TextWrapping="Wrap"
+                           Margin="0,0,0,12"/>
+                
+                <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,0,0,28">
+                    <TextBlock Text="{Binding Year}"
+                               Foreground="#8E8E93"
+                               FontSize="15"
+                               VerticalAlignment="Center"/>
+
+                    <Border Background="#3A2A00" CornerRadius="6" Padding="10,4">
+                        <TextBlock Text="{Binding GenreName}"
+                                   Foreground="#F5A623"
+                                   FontSize="13" FontWeight="SemiBold"/>
+                    </Border>
+
+                    <StackPanel Orientation="Horizontal" Spacing="4"
+                                VerticalAlignment="Center">
+                        <TextBlock Text="★" Foreground="#F5A623" FontSize="16"/>
+                        <TextBlock Text="{Binding ScoreDisplay}"
+                                   Foreground="White"
+                                   FontSize="16" FontWeight="SemiBold"/>
+                        <TextBlock Text="/ 10" Foreground="#8E8E93"
+                                   FontSize="14" VerticalAlignment="Bottom"/>
+                    </StackPanel>
+                </StackPanel>
+                
+                <TextBlock Text="DIRECTOR" Foreground="#8E8E93"
+                           FontSize="11" FontWeight="SemiBold"
+                           LetterSpacing="2" Margin="0,0,0,6"/>
+                <TextBlock Text="{Binding DirectorFullName}"
+                           Foreground="White" FontSize="15"
+                           Margin="0,0,0,28"/>
+                
+                <TextBlock Text="YOUR RATING" Foreground="#8E8E93"
+                           FontSize="11" FontWeight="SemiBold"
+                           LetterSpacing="2" Margin="0,0,0,10"/>
+
+                <ItemsControl ItemsSource="{Binding Stars}" Margin="0,0,0,28">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" Spacing="6"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="vm:StarViewModel">
+                            <Button Command="{Binding SelectCommand}"
+                                    Background="Transparent"
+                                    Padding="0" Cursor="Hand"
+                                    Width="28" Height="28">
+                                <Panel>
+
+                                    <Image Source="/Assets/star.png"
+                                           Width="24" Height="24"
+                                           Opacity="0.2"
+                                           IsVisible="{Binding !IsFilled}"/>
+
+                                    <Image Source="/Assets/star.png"
+                                           Width="24" Height="24"
+                                           IsVisible="{Binding IsFilled}"/>
+                                </Panel>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <StackPanel IsVisible="{Binding ShowCommentBox}" 
+                            Margin="0,12,0,28" Spacing="8">
+                    <TextBox Text="{Binding Comment}"
+                             PlaceholderText="Add comment"
+                             Background="#2C2C2E" Foreground="White"
+                             BorderBrush="#3A3A3C" CornerRadius="8"
+                             Padding="12,8" TextWrapping="Wrap"
+                             MaxHeight="100"/>
+                    <Button Content="Submit rating"
+                            Command="{Binding SubmitRatingCommand}"
+                            Background="#F5A623" Foreground="White"
+                            FontWeight="SemiBold" CornerRadius="8"
+                            Padding="16,8" HorizontalAlignment="Left"/>
+                </StackPanel>
+                
+                <TextBlock Text="DESCRIPTION" Foreground="#8E8E93"
+                           FontSize="11" FontWeight="SemiBold"
+                           LetterSpacing="2" Margin="0,0,0,6"/>
+                <TextBlock Text="{Binding Description}"
+                           Foreground="#EBEBF5" FontSize="14"
+                           TextWrapping="Wrap" LineHeight="22"/>
+                <TextBlock Text="{Binding ErrorMessage}"
+                           IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                           Foreground="#FF453A" FontSize="13"
+                           Margin="0,0,0,12"/>
+
+            </StackPanel>
+        </ScrollViewer>
+
+    </Grid>
+</UserControl>

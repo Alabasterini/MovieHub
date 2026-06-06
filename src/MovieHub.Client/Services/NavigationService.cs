@@ -1,5 +1,6 @@
 using System;
 using CommunityToolkit.Mvvm.ComponentModel;
+using MovieHub.Client.ViewModels;
 
 namespace MovieHub.Client.Services;
 
@@ -19,5 +20,14 @@ public class NavigationService(Func<Type, object> viewModelFactory) : Observable
     {
         var viewModel = _viewModelFactory(typeof(TViewModel));
         CurrentView = viewModel;
+    }
+    public void NavigateToMovie(int movieId)
+    {
+        var viewModel = _viewModelFactory(typeof(MovieDetailViewModel));
+        if (viewModel is MovieDetailViewModel detailVm)
+        {
+            CurrentView = viewModel;
+            detailVm.MovieId = movieId;
+        }
     }
 }

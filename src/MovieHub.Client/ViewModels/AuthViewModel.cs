@@ -62,8 +62,9 @@ public partial class AuthViewModel(ApiClient apiClient, SessionService sessionSe
             IsLoading = true;
 
             var response = await _apiClient.LoginAsync(new LoginRequest { Email = Email, Password = Password });
-            _sessionService.SetSession(response.AccessToken, response.Username, response.Role);
-            _navigationService.NavigateTo<MainViewModel>();
+            _sessionService.SetSession(response.AccessToken, response.Username, response.Role, response.UserId);
+            _apiClient.SetAuthToken(response.AccessToken); 
+            _navigationService.NavigateTo<SearchViewModel>();
         }
         catch (Exception ex)
         {
@@ -74,6 +75,7 @@ public partial class AuthViewModel(ApiClient apiClient, SessionService sessionSe
             IsLoading = false;
         }
     }
+    
     [RelayCommand]
     private async Task RegisterAsync()
     {
@@ -128,7 +130,7 @@ public partial class AuthViewModel(ApiClient apiClient, SessionService sessionSe
         if (IsLoginTab)
         {
             ErrorMessage = string.Empty;
-            return Email.Length != 0 || Password.Length != 0;
+            return IsValidEmail(Email) || Password.Length != 0;
         }
 
         if (!IsLoginTab)

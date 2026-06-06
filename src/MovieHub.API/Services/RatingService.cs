@@ -53,7 +53,8 @@ public class RatingService(AppDbContext dbContext)
             Value = request.Value,
             Comment = request.Comment,
             CreatedAt = DateTime.UtcNow,
-            UserId = userId
+            UserId = userId,
+            MovieId = movieId
         };
         _dbContext.Ratings.Add(rating);
         await _dbContext.SaveChangesAsync(cancellationToken);
