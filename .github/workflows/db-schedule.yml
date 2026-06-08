@@ -1,0 +1,35 @@
+name: DB schedule stop/start
+
+on:
+  schedule:
+    - cron: '0 21 * * *'
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+
+jobs:
+  toggle-db:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_47165733A2C4489A8B7312621EBD290E }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_408097D36A094DA59FE3634B3F328B8C }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_A04FD34DFDA7416EA55C973AEC84DEE6 }}
+
+      - name: Stop DB (22:00 PL)
+        if: github.event.schedule == '0 21 * * *'
+        run: |
+          az postgres flexible-server stop \
+            --name moviehub-db \
+            --resource-group moviehub-rg
+
+      - name: Start DB (06:00 PL)
+        if: github.event.schedule == '0 5 * * *'
+        run: |
+          az postgres flexible-server start \
+            --name moviehub-db \
+            --resource-group moviehub-rg
