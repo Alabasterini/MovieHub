@@ -14,6 +14,7 @@ obj/
 .env
 .env.*
 .junie
+.md
 
 ## OS
 .DS_Store
