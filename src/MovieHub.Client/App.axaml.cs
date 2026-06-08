@@ -40,7 +40,7 @@ public class App : Application
     {
         services.AddSingleton<HttpClient>(_ => new HttpClient
         {
-            BaseAddress = new Uri("http://localhost:5080")
+            BaseAddress = new Uri("https://moviehub-api.azurewebsites.net")
         });
 
         services.AddSingleton<ApiClient>();

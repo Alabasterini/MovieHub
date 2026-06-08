@@ -86,6 +86,13 @@
                                  Padding="12,10"/>
                     </StackPanel>
                 </StackPanel>
+                
+                <TextBlock
+                    Text="{Binding SuccessMessage}"
+                    Foreground="Green"
+                    IsVisible="{Binding SuccessMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                    HorizontalAlignment="Center"
+                    Margin="0,8,0,0" />
 
 
                 <TextBlock Text="{Binding ErrorMessage}"

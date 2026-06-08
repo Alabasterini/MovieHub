@@ -51,6 +51,9 @@ public partial class AuthViewModel(ApiClient apiClient, SessionService sessionSe
 
     [ObservableProperty]
     private string _buttonMessage = "Login";
+    
+    [ObservableProperty]
+    private string _successMessage = string.Empty;
 
     private const string EmailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
 
@@ -84,16 +87,19 @@ public partial class AuthViewModel(ApiClient apiClient, SessionService sessionSe
             IsLoading = true;
 
             await _apiClient.RegisterAsync(new RegisterRequest { Username = Username, Email = Email, Password = Password });
+            
+            SwitchToLogin();
+            ClearTextBoxes();
         }
         catch (Exception)
         {
             ErrorMessage = new HttpRequestException("There was problem while registering").Message;
         }
         finally
-        {
+        { 
             IsLoading = false;
-            IsLoginTab = true;
         }
+        
     }
     [RelayCommand]
     private void SwitchToLogin()
@@ -102,6 +108,8 @@ public partial class AuthViewModel(ApiClient apiClient, SessionService sessionSe
         LoginColor = "#F97316";
         RegisterColor = "#636366";
         ButtonMessage = "Login";
+        ErrorMessage = string.Empty;
+        SuccessMessage = string.Empty;
     }
 
     [RelayCommand]
@@ -111,6 +119,8 @@ public partial class AuthViewModel(ApiClient apiClient, SessionService sessionSe
         LoginColor = "#636366";
         RegisterColor = "#F97316";
         ButtonMessage = "Create Account";
+        ErrorMessage = string.Empty;
+        SuccessMessage = string.Empty;
     }
     [RelayCommand(CanExecute = nameof(CanSubmit))]
     private async Task SubmitAsync()
@@ -154,5 +164,13 @@ public partial class AuthViewModel(ApiClient apiClient, SessionService sessionSe
         {
             return false;
         }
+    }
+
+    private void ClearTextBoxes()
+    {
+        Email = string.Empty;
+        Password = string.Empty;
+        PasswordRegister = string.Empty;
+        Username = string.Empty;
     }
 }
